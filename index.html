@@ -25,50 +25,78 @@
 </head>
 <body>
   <div class="wrap">
-    <!-- Logo da Aprimora -->
     <img class="logo" src="LogoAprimora.png" alt="Aprimora Studio de Pilates">
-    
+
     <h1>Links</h1>
+
     <div class="links">
-      <!-- Instagram -->
       <a class="btn" href="https://www.instagram.com/aprimorastudiodepilates" target="_blank" rel="noopener">
         <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
         Instagram
       </a>
-      
-      <!-- Facebook -->
+
       <a class="btn" href="https://www.facebook.com/studioaprimora" target="_blank" rel="noopener">
         <img class="icon" src="LogoFacebook.png" alt="Facebook">
         Facebook
       </a>
 
-      <!-- WhatsApp (dinâmico) -->
-      <a id="whatsapp-link" class="btn" href="#" target="_blank">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+      <a id="whatsapp-link" class="btn" href="javascript:void(0)" rel="noopener">
+        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
         WhatsApp
       </a>
-      
-      <!-- Site Aprimora -->
+
       <a class="btn" href="https://www.studioaprimora.com.br/" target="_blank" rel="noopener">
         <img class="icon" src="website-icon-8.png" alt="Site">
         Site
       </a>
-      
     </div>
+
     <footer>© Aprimora Studio de Pilates</footer>
   </div>
 
-      <!-- SCRIPT DE ORIGEM -->
   <script>
+    const SUPABASE_URL = "https://irvksqjmvgwztcshqpye.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_7IVjNduroIDoEQcmbGVCbg_1qe0CU7F";
+
     const params = new URLSearchParams(window.location.search);
     const origem = params.get("origem") || "QR-Code";
 
     const mensagem = `Olá! Vim pelo ${origem}.`;
-    const link = `https://wa.me/5551996922828?text=${encodeURIComponent(mensagem)}`;
+    const whatsappUrl = `https://wa.me/5551996922828?text=${encodeURIComponent(mensagem)}`;
 
-    document.getElementById("whatsapp-link").href = link;
+    const btn = document.getElementById("whatsapp-link");
+
+    btn.addEventListener("click", async function (e) {
+      e.preventDefault();
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/lead_events`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Prefer": "return=representation"
+          },
+          body: JSON.stringify([
+            {
+              origem: origem,
+              event_type: "click_whatsapp",
+              user_agent: navigator.userAgent
+            }
+          ])
+        });
+
+        const result = await response.text();
+        console.log("Supabase status:", response.status);
+        console.log("Supabase resposta:", result);
+      } catch (err) {
+        console.error("Erro ao registrar evento:", err);
+      }
+
+      window.open(whatsappUrl, "_blank");
+    });
   </script>
-  
 </body>
 </html>
 
