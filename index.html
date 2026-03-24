@@ -61,7 +61,7 @@
       <!-- SCRIPT DE ORIGEM -->
   <script>
     const params = new URLSearchParams(window.location.search);
-    const origem = params.get("origem") || "Site";
+    const origem = params.get("origem") || "QR-Code";
 
     const mensagem = `Olá! Vim pelo ${origem}.`;
     const link = `https://wa.me/5551996922828?text=${encodeURIComponent(mensagem)}`;
