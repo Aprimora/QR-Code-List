@@ -42,9 +42,9 @@
         Facebook
       </a>
 
-      <!-- WhatsApp -->
-      <a class="btn" href="https://wa.me/5551996922828?text=Olá%20Aprimora!%20Vim%20pelo%20QR%20code." target="_blank" rel="noopener">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+      <!-- WhatsApp (dinâmico) -->
+      <a id="whatsapp-link" class="btn" href="#" target="_blank">
+        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
         WhatsApp
       </a>
       
@@ -57,8 +57,19 @@
     </div>
     <footer>© Aprimora Studio de Pilates</footer>
   </div>
-</body>
 
+      <!-- SCRIPT DE ORIGEM -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const origem = params.get("origem") || "Site";
+
+    const mensagem = `Olá! Vim pelo ${origem}.`;
+    const link = `https://wa.me/5551996922828?text=${encodeURIComponent(mensagem)}`;
+
+    document.getElementById("whatsapp-link").href = link;
+  </script>
+  
+</body>
 </html>
 
 
